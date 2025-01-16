@@ -1,4 +1,7 @@
 import streamlit as st
+import matplotlib.pyplot as plt
+import numpy as np
+
 
 # Функция расчёта продолжительности жизни
 def calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress):
