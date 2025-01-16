@@ -83,3 +83,23 @@ if stress > 7:
     st.write("[Курс по медитации и управлению стрессом](https://www.coursera.org/learn/meditation) - техники для управления стрессом.")
 else:
     st.write("Вы находитесь в пределах нормального уровня стресса. Это помогает поддерживать ваше здоровье в хорошем состоянии.")
+# Линейный график
+st.markdown("### Линейный график прогноза продолжительности жизни")
+
+# Создадим линейный график для разных значений возраста
+ages = np.arange(18, 101)
+life_expectancies = [calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress) for age in ages]
+
+# Построение графика
+plt.figure(figsize=(10, 5))
+plt.plot(ages, life_expectancies, label="Прогнозируемая продолжительность жизни", color='b', marker='o')
+
+plt.title("Зависимость продолжительности жизни от возраста")
+plt.xlabel("Возраст (лет)")
+plt.ylabel("Продолжительность жизни (лет)")
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+# Отображаем график в Streamlit
+st.pyplot(plt)
