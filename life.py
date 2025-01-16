@@ -1,6 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-import numpy as np  # Добавьте этот импорт
+import numpy as np
 
 # Функция расчёта продолжительности жизни
 def calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress):
@@ -98,3 +98,24 @@ else:
 # Отображаем рекомендации в виде списка
 for recommendation in recommendations:
     st.write(recommendation)
+
+# Линейный график
+st.markdown("### Линейный график прогноза продолжительности жизни")
+
+# Создадим линейный график для разных значений возраста
+ages = np.arange(18, 101)
+life_expectancies = [calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress) for age in ages]
+
+# Построение графика
+plt.figure(figsize=(10, 5))
+plt.plot(ages, life_expectancies, label="Прогнозируемая продолжительность жизни", color='b', marker='o')
+
+plt.title("Зависимость продолжительности жизни от возраста")
+plt.xlabel("Возраст (лет)")
+plt.ylabel("Продолжительность жизни (лет)")
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+
+# Отображаем график в Streamlit
+st.pyplot(plt)
