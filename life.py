@@ -10,19 +10,31 @@ def calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress):
     # Начальное значение
     life_expectancy = base_life_expectancy - (age - 40) * 0.5  # Возраст снижает базу
 
-    # Факторы
-    if bmi > 30:
-        life_expectancy -= (bmi - 30) * 0.5  # Ожирение снижает
-    elif bmi < 18.5:
-        life_expectancy -= (18.5 - bmi) * 0.3  # Недостаток веса
+    # Факторы по BMI
+    if bmi < 18.5:
+        life_expectancy -= 5  # Недостаток веса снижает
+    elif 18.5 <= bmi < 24.9:
+        life_expectancy += 2  # Нормальный BMI улучшает
+    elif 25 <= bmi < 29.9:
+        life_expectancy -= 3  # Избыточный вес снижает
+    elif bmi >= 30:
+        life_expectancy -= 6  # Ожирение сильно снижает
+
+    # Курение
     if smoking == "Да":
         life_expectancy -= 10  # Курение — большой минус
+
+    # Алкоголь
     if alcohol == "Да":
         life_expectancy -= 5  # Алкоголь снижает
+
+    # Шаги
     if steps < 5000:
         life_expectancy -= 3  # Малоподвижный образ жизни
     elif 8000 <= steps <= 12000:
         life_expectancy += 2  # Активность повышает
+
+    # Стресс
     if stress > 7:
         life_expectancy -= (stress - 7) * 2  # Высокий стресс сильно снижает
 
@@ -36,7 +48,17 @@ st.title("Прогноз продолжительности жизни")
 
 # Ввод данных пользователем
 age = st.slider("Ваш возраст", 18, 100, 30)
-bmi = st.slider("Ваш индекс массы тела (BMI)", 10.0, 50.0, 22.0)
+weight = st.number_input("Ваш вес (в кг)", min_value=30, max_value=200, value=70, step=1)
+height = st.number_input("Ваш рост (в см)", min_value=100, max_value=250, value=170, step=1)
+
+# Рассчёт BMI
+height_m = height / 100  # Конвертация роста в метры
+bmi = weight / (height_m ** 2)
+
+# Отображение рассчитанного BMI
+st.write(f"Ваш рассчитанный индекс массы тела (BMI): {bmi:.1f}")
+
+# Остальные параметры
 smoking = st.selectbox("Вы курите?", ["Нет", "Да"])
 alcohol = st.selectbox("Вы употребляете алкоголь?", ["Нет", "Да"])
 steps = st.slider("Число шагов в день", 0, 20000, 5000, step=500)
@@ -57,13 +79,17 @@ st.markdown("### Рекомендации:")
 recommendations = []
 
 # BMI рекомендации
-if bmi > 30:
+if bmi < 18.5:
+    recommendations.append("❗ **Индекс массы тела слишком низкий**. Рекомендуется проконсультироваться с врачом и увеличить потребление питательных веществ.")
+    recommendations.append("[Курс по правильному питанию и набору веса](https://www.coursera.org/learn/food-and-mood) - как улучшить здоровье через питание.")
+elif 18.5 <= bmi < 24.9:
+    recommendations.append("✅ **Ваш индекс массы тела в пределах нормы**. Продолжайте вести здоровый образ жизни.")
+elif 25 <= bmi < 29.9:
     recommendations.append("❗ **Индекс массы тела выше нормы**. Рекомендуется снижение веса через здоровое питание и регулярные физические нагрузки.")
     recommendations.append("[Курс по снижению веса и здоровому питанию](https://www.coursera.org/learn/food-and-mood) - как улучшить здоровье через питание.")
-elif bmi < 18.5:
-    recommendations.append("❗ **Индекс массы тела слишком низкий**. Рекомендуется проконсультироваться с врачом и увеличить потребление питательных веществ.")
-else:
-    recommendations.append("✅ **Ваш индекс массы тела в пределах нормы**. Продолжайте вести здоровый образ жизни.")
+elif bmi >= 30:
+    recommendations.append("❗ **Индекс массы тела слишком высокое (ожирение)**. Рекомендуется проконсультироваться с врачом для разработки плана по снижению веса.")
+    recommendations.append("[Курс по борьбе с ожирением](https://www.coursera.org/learn/food-and-mood) - научитесь управлять своим весом.")
 
 # Курение
 if smoking == "Да":
@@ -98,24 +124,3 @@ else:
 # Отображаем рекомендации в виде списка
 for recommendation in recommendations:
     st.write(recommendation)
-
-# Линейный график
-st.markdown("### Линейный график прогноза продолжительности жизни")
-
-# Создадим линейный график для разных значений возраста
-ages = np.arange(18, 101)
-life_expectancies = [calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress) for age in ages]
-
-# Построение графика
-plt.figure(figsize=(10, 5))
-plt.plot(ages, life_expectancies, label="Прогнозируемая продолжительность жизни", color='b', marker='o')
-
-plt.title("Зависимость продолжительности жизни от возраста")
-plt.xlabel("Возраст (лет)")
-plt.ylabel("Продолжительность жизни (лет)")
-plt.grid(True)
-plt.legend()
-plt.tight_layout()
-
-# Отображаем график в Streamlit
-st.pyplot(plt)
