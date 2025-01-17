@@ -47,6 +47,41 @@ def calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress):
 
     return round(life_expectancy, 1)
 
+# Расчёт возможного увеличения продолжительности жизни
+def calculate_impact_of_improvements(age, bmi, smoking, alcohol, steps, stress):
+    base_life_expectancy = calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress)
+    improvements = {}
+
+    # Устранение курения
+    if smoking == "Да":
+        no_smoking_life_expectancy = calculate_life_expectancy(age, bmi, "Нет", alcohol, steps, stress)
+        improvements["Отказ от курения"] = no_smoking_life_expectancy - base_life_expectancy
+
+    # Устранение алкоголя
+    if alcohol == "Да":
+        no_alcohol_life_expectancy = calculate_life_expectancy(age, bmi, smoking, "Нет", steps, stress)
+        improvements["Отказ от алкоголя"] = no_alcohol_life_expectancy - base_life_expectancy
+
+    # Приведение BMI к норме
+    if bmi < 18.5 or bmi >= 25:
+        optimal_bmi = 22  # Нормальный индекс массы тела
+        optimal_bmi_life_expectancy = calculate_life_expectancy(age, optimal_bmi, smoking, alcohol, steps, stress)
+        improvements["Приведение BMI к норме"] = optimal_bmi_life_expectancy - base_life_expectancy
+
+    # Увеличение физической активности
+    if steps < 8000:
+        active_steps = 10000
+        active_steps_life_expectancy = calculate_life_expectancy(age, bmi, smoking, alcohol, active_steps, stress)
+        improvements["Увеличение физической активности"] = active_steps_life_expectancy - base_life_expectancy
+
+    # Снижение стресса
+    if stress > 3:
+        low_stress = 3
+        low_stress_life_expectancy = calculate_life_expectancy(age, bmi, smoking, alcohol, steps, low_stress)
+        improvements["Снижение уровня стресса"] = low_stress_life_expectancy - base_life_expectancy
+
+    return improvements
+
 # Streamlit интерфейс
 st.title("Прогноз продолжительности жизни")
 
@@ -125,3 +160,13 @@ else:
 # Отображение рекомендаций
 for recommendation in recommendations:
     st.write(recommendation)
+
+# Добавляем после рекомендаций
+improvements = calculate_impact_of_improvements(age, bmi, smoking, alcohol, steps, stress)
+
+st.markdown("### Потенциальное увеличение продолжительности жизни")
+if improvements:
+    for factor, gain in improvements.items():
+        st.write(f"**{factor}:** +{gain:.1f} лет")
+else:
+    st.write("Все ваши параметры уже находятся в оптимальном состоянии!")
