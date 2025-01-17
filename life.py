@@ -98,6 +98,12 @@ bmi = weight / (height_m ** 2)
 min_weight = round(18.5 * (height / 100) ** 2, 1)
 max_weight = round(24.9 * (height / 100) ** 2, 1)
 
+# Остальные параметры
+smoking = st.selectbox("Вы курите?", ["Нет", "Да"])
+alcohol = st.selectbox("Вы употребляете алкоголь?", ["Нет", "Да"])
+steps = st.slider("Число шагов в день", 0, 20000, 5000, step=500)
+stress = st.slider("Уровень стресса (0 - нет стресса, 10 - высокий)", 0, 10, 5)
+
 # Расчёт продолжительности жизни
 life_expectancy = calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress)
 remaining_years = round(life_expectancy - age, 1)
