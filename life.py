@@ -29,14 +29,22 @@ def calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress):
         life_expectancy -= 5  # Алкоголь снижает
 
     # Шаги
-    if steps < 5000:
-        life_expectancy -= 3  # Малоподвижный образ жизни
-    elif 5000 <= steps < 8000:
-        life_expectancy += 1  # Небольшое улучшение с увеличением шагов
-    elif 8000 <= steps <= 12000:
-        life_expectancy += 2  # Активность повышает
+    if age >= 60:
+        # Для людей старше 60 лет
+        if steps < 6000:
+            life_expectancy -= 3  # Меньше 6000 шагов — снижает продолжительность жизни
+        elif 6000 <= steps <= 8000:
+            life_expectancy += 2  # Оптимальное количество шагов
+        else:
+            life_expectancy += 1  # Более 8000 шагов — дополнительного улучшения нет
     else:
-        life_expectancy += 3  # При 12000+ шагов значительное улучшение
+        # Для людей младше 60 лет
+        if steps < 8000:
+            life_expectancy -= 3  # Меньше 8000 шагов — снижает продолжительность жизни
+        elif 8000 <= steps <= 10000:
+            life_expectancy += 2  # Оптимальное количество шагов
+        else:
+            life_expectancy += 1  # Более 10000 шагов — дополнительного улучшения нет
 
     # Стресс
     if stress <= 3:
