@@ -31,10 +31,14 @@ def calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress):
     # Шаги
     if steps < 5000:
         life_expectancy -= 3  # Малоподвижный образ жизни
+    elif 5000 <= steps < 8000:
+        life_expectancy += 1  # Небольшое улучшение с увеличением шагов
     elif 8000 <= steps <= 12000:
         life_expectancy += 2  # Активность повышает
+    else:
+        life_expectancy += 3  # При 12000+ шагов значительное улучшение
 
-        # Стресс
+    # Стресс
     if stress <= 3:
         life_expectancy += (3 - stress) * 1  # Низкий стресс увеличивает
     elif 4 <= stress <= 7:
