@@ -4,7 +4,7 @@ import numpy as np
 
 # Функция расчёта продолжительности жизни
 def calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress):
-    max_life_expectancy = 120  # Максимальный возможный возраст
+    max_life_expectancy = 75  # Максимальный возможный возраст - на основе средней продолжительности жизни в РФ
     base_life_expectancy = 85  # Базовая продолжительность жизни
 
     # Начальное значение
