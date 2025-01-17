@@ -81,7 +81,7 @@ st.markdown("### Рекомендации:")
 recommendations = []
 
 # BMI рекомендации
-if bmi > 30:
+if bmi > 27:
     recommendations.append("❗ **Индекс массы тела выше нормы**. Рекомендуется снижение веса через здоровое питание и регулярные физические нагрузки.")
     recommendations.append("[Курс по снижению веса и здоровому питанию](https://www.coursera.org/learn/food-and-mood) - как улучшить здоровье через питание.")
 elif bmi < 18.5:
