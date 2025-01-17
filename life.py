@@ -98,6 +98,10 @@ bmi = weight / (height_m ** 2)
 min_weight = round(18.5 * (height / 100) ** 2, 1)
 max_weight = round(24.9 * (height / 100) ** 2, 1)
 
+# Отображение рассчитанного BMI
+st.write(f"Ваш рассчитанный индекс массы тела (BMI): {bmi:.1f}")
+st.caption(f"Рекомендуемый диапазон веса: {min_weight}–{max_weight} кг")
+
 # Остальные параметры
 smoking = st.selectbox("Вы курите?", ["Нет", "Да"])
 alcohol = st.selectbox("Вы употребляете алкоголь?", ["Нет", "Да"])
@@ -107,10 +111,6 @@ stress = st.slider("Уровень стресса (0 - нет стресса, 10
 # Расчёт продолжительности жизни
 life_expectancy = calculate_life_expectancy(age, bmi, smoking, alcohol, steps, stress)
 remaining_years = round(life_expectancy - age, 1)
-
-# Отображение рассчитанного BMI
-st.write(f"Ваш рассчитанный индекс массы тела (BMI): {bmi:.1f}")
-st.caption(f"Рекомендуемый диапазон веса: {min_weight}–{max_weight} кг")
 
 # Отображение рассчитанной продолжительности жизни
 st.subheader(f"Прогнозируемая продолжительность жизни: {life_expectancy} лет")
